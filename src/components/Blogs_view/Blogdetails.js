@@ -32,8 +32,8 @@ function Blogdetails() {
         'Content-Type':'application/json',
       })
       .then(resp=>{
-        resp.status
-        setStatus(resp.status)
+        resp.status()
+        setStatus(resp.status())
       })
       
         delay();
