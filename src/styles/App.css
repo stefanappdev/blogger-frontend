@@ -1,0 +1,39 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+
+}
+.content-box{
+    padding-top:70px ;
+    padding-left: 10px;
+    margin-bottom: 30px;
+}
+
+a{
+    text-decoration: none;
+}
+
+#home,#blogs{
+    color: white;
+}
+
+.blog-card{
+    margin-bottom:-50px;
+}
+
+.blog-nav{
+    list-style: none;
+    display: inline-flex;
+    
+}
+
+.blog-nav>li{
+    margin-left: 10px;
+}
+
+hr{
+    margin: 10px;
+    border-style:solid
+}
