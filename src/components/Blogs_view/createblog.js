@@ -38,7 +38,7 @@ function Createblog(){
   }
   const handleSubmit=(e)=>{
     e.preventDefault();
-    let url="http://localhost:5000/blogs";
+    let url="https://sample-blogger-api.onrender.com/blogs";
     
       if (validateForm()){
 

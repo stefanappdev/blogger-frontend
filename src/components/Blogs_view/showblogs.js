@@ -19,7 +19,7 @@ import { useParams,Link } from 'react-router-dom';
   }
 
   useEffect(()=>{
-     fetchBlogs('http://localhost:5000/blogs')
+     fetchBlogs('https://sample-blogger-api.onrender.com/blogs')
   .catch(err=>{
     console.log('Something went wrong',err.message)
   })

@@ -22,7 +22,7 @@ function Blogdetails() {
     body:''
                          });
 
-  let API=`http://localhost:5000/blogs/${id}`;
+  let API=`https://sample-blogger-api.onrender.com/${id}`;
  
   
   const deleteblog=async()=>{
