@@ -16,7 +16,7 @@ function Editblog({title,snippet,body,shouldEdit,}) {
      
       const handleSubmit=(e)=>{
         e.preventDefault();
-        let url=`http://localhost:5000/blogs/${id}`;
+        let url=`${process.env.REACT_APP_SERVER_URL}/blogs/${id}`;
 
    
         

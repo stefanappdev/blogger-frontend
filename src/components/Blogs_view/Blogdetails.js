@@ -21,8 +21,9 @@ function Blogdetails() {
     snippet:'',
     body:''
                          });
-
-  let API=`http://localhost:5000/blogs/${id}`;
+ 
+  
+  let API=`${process.env.REACT_APP_SERVER_URL}/blogs/${id}`;
  
 
   const deleteblog=async()=>{
@@ -103,7 +104,9 @@ function Blogdetails() {
     
     shouldEdit===false?(<div className='blog-details-group'>
 
-      <h1>Blog Details </h1>
+      <h1>Blog Details</h1>
+  
+    
 
       <div className='blog-details'>
         Title:{blog.title}

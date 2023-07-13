@@ -9,6 +9,8 @@ function Createblog(){
   const navigate=useNavigate();
   const[formdata,setFormData]=useState({title:'',snippet:'',body:''});
   const[validate,setValidate]=useState(false);
+  const[message,setmessage]=useState(false);
+  
 
   const handleChange=(e)=>{
     setFormData({...formdata,[e.target.name]:e.target.value});
@@ -38,7 +40,7 @@ function Createblog(){
   }
   const handleSubmit=(e)=>{
     e.preventDefault();
-    let url="http://localhost:5000/blogs";
+    let url=`${process.env.REACT_APP_SERVER_URL}/blogs`;
     
       if (validateForm()){
 
@@ -56,8 +58,12 @@ function Createblog(){
        }catch(err){
            console.log('Something went wrong',err.message)
     }
+
+    setmessage('Blog created successfully...redirecting to blogs page');
+    setTimeout(()=>{
+      navigate('/blogs/view');
+    },5000)
     
-    navigate('/blogs/view');
     
   }
      
@@ -125,6 +131,8 @@ function Createblog(){
         </form>
         <br/>
         <br/>
+
+        <div>{message}</div>
 
         </div>
 
