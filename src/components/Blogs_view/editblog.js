@@ -16,7 +16,9 @@ function Editblog({title,snippet,body,shouldEdit,}) {
      
       const handleSubmit=(e)=>{
         e.preventDefault();
-        let url=`https://sample-blogger-api.onrender.com/${id}`;
+        let url=`http://localhost:5000/blogs/${id}`;
+
+   
         
           
           const data=formdata

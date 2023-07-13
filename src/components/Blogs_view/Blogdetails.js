@@ -10,7 +10,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 
 
 function Blogdetails() {
-
+  
   const[shouldEdit,setshouldEdit]=useState(false);
   const [message,setmessage]=useState();
   const [Status,setStatus]=useState();
@@ -22,9 +22,9 @@ function Blogdetails() {
     body:''
                          });
 
-  let API=`https://sample-blogger-api.onrender.com/${id}`;
+  let API=`http://localhost:5000/blogs/${id}`;
  
-  
+
   const deleteblog=async()=>{
     try{
       fetch(API,{
@@ -32,8 +32,8 @@ function Blogdetails() {
         'Content-Type':'application/json',
       })
       .then(resp=>{
-        resp.status()
-        setStatus(resp.status())
+        
+        setStatus(resp.status);
       })
       
         delay();
