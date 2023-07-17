@@ -1,18 +1,24 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect,useContext, useState } from 'react'
 
 import {BrowserRouter as Router, Routes, Route,Link,useNavigate } from 'react-router-dom';
 import Home from './components/Home';
+import Signup from './components/Signup';
+import Login from './components/protected_view/Login';
 import Createblog from './components/Blogs_view/createblog';
 import Blogs_Main from './components/Blogs_view/Blogs_Main';
 import Showblogs from './components/Blogs_view/showblogs';
 import Error404 from './components/404';
 import Blogdetails from './components/Blogs_view/Blogdetails';
 import './styles/App.css'
-import { AppBar,Toolbar,Typography, Button, Menu, MenuItem,IconButton,Box }  from '@mui/material';
+import { AppBar,Toolbar,Typography, Button, Menu, MenuItem,IconButton,Box,TextField }  from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
+import { AuthProviderWrapper } from './components/protected_view/Auth';
+import RequiresAuth from './components/protected_view/RequiresAuth';
 
 function App() {
 
+
+  
 
   const [AnchorEl,setAnchorEl]=useState();
   const navigate= useNavigate();
@@ -38,6 +44,8 @@ function App() {
 
   
   return (
+    
+    <AuthProviderWrapper>
     <div>
 
      
@@ -61,7 +69,7 @@ function App() {
               />
 
 
-            <Button sx={{fontWeight:'bold'}} variant='text'> <Link to="/" id='home'> Sample Blog App </Link> </Button> 
+            <Button sx={{fontWeight:'bold'}} variant='text'> <Link to="/" className='main-nav-button'> Sample Blog App </Link> </Button> 
             
 
          
@@ -80,8 +88,10 @@ function App() {
             
 
               
-            <Button sx={{marginLeft:'auto'}} variant='text'> <Link to="/" id='home'> Home</Link> </Button>  
-            <Button sx={{marginLeft:'10px'}} variant='text'> <Link to="/blogs/view" id='blogs'>blogs</Link> </Button>
+            <Button sx={{marginLeft:'auto'}} variant='text'> <Link to="/" className='main-nav-button'> Home</Link> </Button>  
+            <Button sx={{marginLeft:'10px'}} variant='text'> <Link to="/blogs/view" className='main-nav-button'>blogs</Link> </Button>
+            <Button sx={{marginLeft:'10px'}} variant='text'> <Link to="/login" className='main-nav-button'>login</Link> </Button>
+            <Button sx={{marginLeft:'10px'}} variant='text'> <Link to="/signup" className='main-nav-button'>signup</Link> </Button>
 
           
           </Toolbar>
@@ -89,15 +99,34 @@ function App() {
 
 
         
-
+        
           <Routes>
 
               <Route path="/" element={<Home/>}/>
+
+              <Route path='/login' element={<Login/>}/>
+
+              <Route path='/signup' element={<Signup/>}/>
          
               <Route path="blogs" element={<Blogs_Main/>}>
-                <Route path="/blogs/create" element={<Createblog/>}/>
+                <Route path="/blogs/create"
 
-                <Route path="/blogs/view" element={<Showblogs/>}/>
+                element={
+                  <RequiresAuth>
+                  <Createblog/>
+                  </RequiresAuth>
+                  }/>
+
+                <Route path="/blogs/view" 
+                
+                element={
+                  <RequiresAuth>
+                   <Showblogs/>
+                   </RequiresAuth>
+                  }
+                
+                
+                />
 
                 <Route path="/blogs/details/:id" element={<Blogdetails/>}/> 
                
@@ -108,8 +137,10 @@ function App() {
               <Route path="*" element={<Error404/>}/>
 
         </Routes>
+       
      
     </div>
+    </AuthProviderWrapper>
   )
 }
 

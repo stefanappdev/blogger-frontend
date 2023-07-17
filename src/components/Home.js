@@ -1,16 +1,21 @@
-import React from 'react'
+import React, {useState,useEffect,useContext} from 'react'
 import '../styles/Home.css'
 import '../styles/App.css'
 import { Button } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
+import { UseAuth } from './protected_view/Auth'
 export default function Home() {
+
+const Auth=UseAuth();
+
   const navigate=useNavigate();
   return (
     <div className='content-box home-content'>
       
       
-        <h1>Welcome Home</h1>
+        <h1>{Auth.User?`Welcome ${Auth.User}`:'Welcome Guest'}</h1>
 
+       
 
       <div className='img-container'>
 
@@ -26,7 +31,7 @@ export default function Home() {
 
     <br/>
       
-    <Button variant='contained' onClick={()=> navigate('/blogs/create')}>get Started Blogging</Button>
+    <Button variant='contained' onClick={()=>Auth.User?navigate('/blogs/create'):navigate('/login')}>get Started Blogging</Button>
 
     </div>
   )

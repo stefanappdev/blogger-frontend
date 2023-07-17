@@ -15,7 +15,7 @@ a{
     text-decoration: none;
 }
 
-#home,#blogs{
+.main-nav-button{
     color: white;
 }
 
