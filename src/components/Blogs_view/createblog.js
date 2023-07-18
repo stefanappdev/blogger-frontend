@@ -29,24 +29,14 @@ function Createblog(){
     }
   }
 
-  const clearForm=()=>{
-    setFormData(prevFormdata=>{
-      return{
-        title:'',
-        snippet:'',
-        body:''
-      }
-    });
-  }
   const handleSubmit=(e)=>{
+
     e.preventDefault();
     let url=`${process.env.REACT_APP_SERVER_URL}/blogs`;
-    
+    const data=formdata
+
       if (validateForm()){
-
-
       
-      const data=formdata
        try{ 
        fetch(url,{method:'POST',headers: {
            'Content-Type': 'application/json;charset=utf-8'
