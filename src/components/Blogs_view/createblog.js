@@ -2,12 +2,14 @@
 import React,{ useState,useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Button from '@mui/material/Button';
+import { UseAuth } from '../protected_view/Auth';
 import { TextField } from '@mui/material';
 import '../../styles/forms.css';
 
 function Createblog(){
+  const Auth=UseAuth();
   const navigate=useNavigate();
-  const[formdata,setFormData]=useState({title:'',snippet:'',body:''});
+  const[formdata,setFormData]=useState({title:'',snippet:'',body:'',_id_User:Auth.User._id_User});
   const[validate,setValidate]=useState(false);
   const[message,setmessage]=useState(false);
   

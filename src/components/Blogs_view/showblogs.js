@@ -1,12 +1,14 @@
 import { Button } from '@mui/material';
 import React,{useState,useEffect} from 'react'
 import { useParams,Link,useNavigate } from 'react-router-dom';
+import { UseAuth } from '../protected_view/Auth';
  function Showblogs() {
 
   const navigate=useNavigate();
   const [blogs,setblogs]=useState([]);
   const [message,setmessage]=useState();
   const [Status,setStatus]=useState();
+  const Auth=UseAuth();
 
   const fetchBlogs=async(api)=>
   {await fetch(api,{
@@ -64,37 +66,40 @@ import { useParams,Link,useNavigate } from 'react-router-dom';
 
 }}*/
 
- 
+
+  const userblogs=blogs.filter((blog)=>blog._id_User===Auth.User._id_User)
   
-  const blog=blogs.map((blog)=>{
-    let blogUrl=`/blogs/details/${blog._id}`
+  
+  const blog=userblogs.map((blog)=>{
 
-    return(
-      <div className='content-box'>
-        <Link key={blog._id} to={blogUrl}>
-          
-          <div className='blog-card'>
-          
-          <h1>{blog.title}</h1>
-          <p>{blog.body}</p>
-          
+      let blogUrl=`/blogs/details/${blog._id}`
 
-        </div>
-        </Link>
 
+          return <div className='content-box'>
+          <Link key={blog._id} to={blogUrl}>
+            
+            <div className='blog-card'>
+            
+            <h1>{blog.title}</h1>
+            <p>{blog.body}</p>
+            
+
+          </div>
+          </Link>
+
+          <br/>
         <br/>
-       <br/>
-       
-      </div>
-      
-    )
-  })
-  
+        
+        </div>
+        
+        } )
+    
+         
 
-  return(<div>
-        <div>{blogs.length===0?"No blogs yet":blog}</div>
-      </div>)
-  
+    return(<div>
+          <div>{userblogs.length===0?"No blogs yet":blog}</div>
+        </div>)
+    
 }
 
 export default Showblogs
