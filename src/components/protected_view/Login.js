@@ -1,30 +1,86 @@
-import React,{useState,useContext} from 'react'
+import React,{useState,useContext,useEffect} from 'react'
 import '../../styles/login.css'
-import {UseAuth} from './Auth';
+import {UseAuth} from '../protected_view/Auth';
 import { Button } from '@mui/material';
 import {useNavigate} from 'react-router-dom'
+
 function Login() {
   const Auth=UseAuth();
   const navigate=useNavigate()
-  const[formdata,setformdata]=useState({User:null,Password:null});
+  const[formdata,setformdata]=useState({Username:null,Password:null});
+  const[Users,setUsers]=useState([]);
   
- function handleLogin(){
-  validate(formdata)
+  async function  FetchUsers(url){
+    
+    await fetch (url,{method:"GET"})
+    .then(res=>res.json())
+    .then(users=>{
+      //console.log(users);
+      setUsers(users);
+      //console.log(Users)
+      
+    })
+    .catch(err=>{
+      console.log(err.message)
+      })
+    }
   
+    useEffect(()=>{
+      FetchUsers(`http://localhost:5000/users`)
+      .catch(err=>{
+        console.log(err.message)
+      })
+    },[])
+
+
+ function Handlelogin(event){
+
+  event.preventDefault();
+
+
+
+  const targetUser=Users.find(user=>user.Username===formdata.Username);
+  if(targetUser){
+    
+    const trueactions=()=>{ 
+      Auth.setisRegistered(true);
+      Auth.setUser(targetUser);
+      console.log('User logged in successfully');
+      Auth.login(targetUser.Username);
+      navigate('/')
+    }
+    const falseactions=()=>{ 
+      Auth.setisRegistered(false);
+      console.log('incorrect username or password');
+    }
+    
+    targetUser.Password===formdata.Password?
+     trueactions (): falseactions();
+      
+  }
+
+  else{
+    console.log('Unable to find user');
+  }
+  
+  
+  
+
+
 }
 
-function handleLogout(){
+function Handlelogout(){
   Auth.logout()
   navigate('/')
 }
 
 
-const handleChange=(event)=>{
+const Handlechange=(event)=>{
   setformdata({...formdata,[event.target.name]:event.target.value})
 }
 
 const validate=(formdata)=>{
-  if(formdata.User===null||formdata.User.length===0){
+  if(formdata.Username===null||formdata.User.length===0){
 
     let username_message=document.getElementById('username_message')
     username_message.setAttribute('class','error')
@@ -37,10 +93,8 @@ const validate=(formdata)=>{
     password_message.textContent='A password is required'
   }
 
-  else{
-  Auth.login(formdata.User)
-  navigate('/')
-  }
+  
+  
 }
 
 
@@ -53,19 +107,19 @@ const validate=(formdata)=>{
           
           {!Auth.isloggedin?<div>
            
-            <form>
+            <form onSubmit={Handlelogin}  >
 
             <div id='username-container'>
    
               <label for='User'>Username:</label>
 
-              <input id='username' 
+              <input id='Username' 
               className="login-elements" 
               type='text'  
               placeholder='enter a username' 
-              name='User' 
-              onChange={handleChange}
-              value={formdata.User} 
+              name='Username' 
+              onChange={Handlechange}
+              value={formdata.Username} 
               />
                
               <div id='username_message'></div>
@@ -74,14 +128,14 @@ const validate=(formdata)=>{
 
             <div id='password-container'>
 
-                <label for='password'>Password:</label>
+                <label for='Password'>Password:</label>
 
-                <input id='password' 
+                <input id='Password' 
                 className="login-elements" 
                 type='password' 
                 placeholder='enter a password' 
                 name='Password' 
-                onChange={handleChange} 
+                onChange={Handlechange} 
                 value={formdata.Password}/>
 
                 <div id='password_message'></div>
@@ -90,7 +144,7 @@ const validate=(formdata)=>{
                  <br/>
 
                 <div>
-                    <Button variant={'contained'}  onClick={handleLogin}>Login</Button>
+                    <Button variant={'contained'} color='primary' type='submit' >Login</Button>
                 </div>
             </form>
 
@@ -102,7 +156,7 @@ const validate=(formdata)=>{
           <br/>
 
           <div>
-          {Auth.isloggedin&&<Button   variant={'contained'}  onClick={handleLogout}>Logout?</Button>}
+          {Auth.isloggedin&&<Button   variant={'contained'}  onClick={Handlelogout}>Logout?</Button>}
           </div>
 
 

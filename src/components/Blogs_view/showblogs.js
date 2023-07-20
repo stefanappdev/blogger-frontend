@@ -15,9 +15,8 @@ import { useParams,Link,useNavigate } from 'react-router-dom';
   })
   .then(resp=> resp.json())
   .then(data=>{
-    console.log(data);
+    
     setblogs(data);
-    console.log(blogs);
   })
   }
 

@@ -5,21 +5,23 @@ import React,{useState,createContext,useContext} from 'react'
 const AuthContext=createContext(null);
 
 export const AuthProviderWrapper=({children})=>{
+    const [Username,setUsername]=useState(null);
     const [User,setUser]=useState(null);
     const [isloggedin,setisloggedin]=useState(false);
     const  [isRegistered,setisRegistered]=useState(false);
 
-    const login=(User)=>{
-        setUser(User)
+    const login=(Username)=>{
+        setUsername(Username)
         setisloggedin(true)
     }
 
     const logout=()=>{
         setUser(null)
+        setUsername(null)
         setisloggedin(false)
     }
 
-    return <AuthContext.Provider value={{User,login,logout,isloggedin,isRegistered,setisRegistered}}>
+    return <AuthContext.Provider value={{setUser,User,Username,login,logout,isloggedin,isRegistered,setisRegistered}}>
                 {children}
     </AuthContext.Provider>
     

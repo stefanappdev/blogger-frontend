@@ -13,7 +13,7 @@ const Auth=UseAuth();
     <div className='content-box home-content'>
       
       
-        <h1>{Auth.User?`Welcome ${Auth.User}`:'Welcome Guest'}</h1>
+        <h1>{Auth.Username?`Welcome ${Auth.Username}`:'Welcome Guest'}</h1>
 
        
 
