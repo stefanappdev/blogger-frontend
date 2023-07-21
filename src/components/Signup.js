@@ -3,6 +3,7 @@ import React,{ useState,useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import {v4} from 'uuid';
+import FrontendSignupValidation from './protected_view/validations/SignupValidation';
 
 import '../../src/styles/forms.css';
 import '../../src/styles/signup.css';
@@ -10,6 +11,7 @@ import '../../src/styles/signup.css';
 function Signup(){
   const navigate=useNavigate();
   const[formdata,setFormData]=useState({Password:'',_id_User:v4(),Username:'',isRegistered:true});
+  const [err,seterr]=useState(null);
   const[message,setmessage]=useState(false);
 
   
@@ -18,40 +20,82 @@ function Signup(){
     setFormData({...formdata,[e.target.name]:e.target.value});
   }
 
+  const submitdata=()=>{
+
+    let url=`${process.env.REACT_APP_SERVER_URL}/users`;
+
+        try{ 
+          fetch(url,{method:'POST',headers: {
+              'Content-Type': 'application/json;charset=utf-8'
+          },
+          body:JSON.stringify(formdata)
+      })
+          .then(resp=>resp.json())
+          .then(result=>{console.log(result)
+          
+          });
+        
+
+          }
+          
+          catch(err){
+              console.log('Something went wrong',err.message)
+      }
+
+      setmessage('User registered successfully...redirecting to home page');
+      setTimeout(()=>{
+        navigate('/');
+      },5000)
+      
+    }
+
+
+    const Errors=({feedback})=>{
+        let password_message=document.getElementById('password_message');
+        let username_message=document.getElementById('username_message');
+
+        let errors=null
+        seterr(feedback)
+
+        errors=err==='Username must be at least 8 characters'?
+        username_message.textContent=err:"";
+
+        errors=err==='Password must be at least 8 characters'?
+        password_message.textContent=err :"";
+
+        errors=err==='Username is a required field'?
+        username_message.textContent=err :"";
+
+
+        errors=err==='Password is a required field'?
+        password_message.textContent=err :"";
+
+      
+
+    }
+
+
+
   
   
 
   const handleSubmit=(e)=>{
 
     e.preventDefault();
-    let url=`${process.env.REACT_APP_SERVER_URL}/users`;
+   
     //validation goes here
-    /* */
-
-       try{ 
-       fetch(url,{method:'POST',headers: {
-           'Content-Type': 'application/json;charset=utf-8'
-       },
-       body:JSON.stringify(formdata)
-    })
-       .then(resp=>resp.json())
-       .then(result=>{console.log(result)
-       
-       });
-      
-
-       }
-       
-       catch(err){
-           console.log('Something went wrong',err.message)
-   }
-
-    setmessage('User registered successfully...redirecting to home page');
-    setTimeout(()=>{
-      navigate('/');
-    },5000)
     
-  }
+     let validate=FrontendSignupValidation(formdata.Username,formdata.Password);
+     if(validate.status===true){
+       submitdata();
+     }
+     else{
+       Errors(validate)
+       setmessage('Invalid input...try again');
+     }
+
+
+    }
   
   return(
       <div className='content-box'>
@@ -60,10 +104,9 @@ function Signup(){
 
         <form className='forms' onSubmit={handleSubmit} >
             <div className='form-group-container'>
-            <label>Username:
-                
-               
 
+                <label for='Username'>Username:</label>
+               
                 <input
                 className='form-group'
                 type="text" 
@@ -71,30 +114,25 @@ function Signup(){
                 id="Username"
                 value={formdata.Username} 
                 onChange={handleChange} 
-                placeholder="Enter your username" 
-
-                
+                placeholder="Enter your username"  
               />
-            </label>
+          
+            <div id='username_message' className='errors'></div>
+            
 
-            <div id='username_message' className='message'></div>
-            <label>Password:
-            <input
-                className='form-group'
-                id='Password'
-                name='Password'
-                type="password" 
-                value={formdata.Password} 
-                placeholder='Enter your Password' 
-                onChange={handleChange}
-                />
+              <label for='Password'>Password: </label>
 
+              <input
+                  className='form-group'
+                  id='Password'
+                  name='Password'
+                  type="password" 
+                  value={formdata.Password} 
+                  placeholder='Enter your Password' 
+                  onChange={handleChange}
+                  />
 
-
-
-            </label>
-
-            <div id='password_message' className='message'></div>
+              <div id='password_message' className='errors'></div>
            
             
 
