@@ -26,7 +26,7 @@ function Login() {
     }
   
     useEffect(()=>{
-      FetchUsers(`http://localhost:5000/users`)
+      FetchUsers(`${process.env.REACT_APP_SERVER_URL}/users`)
       .catch(err=>{
         console.log(err.message)
       })

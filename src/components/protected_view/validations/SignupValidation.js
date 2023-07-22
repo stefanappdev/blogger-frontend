@@ -1,8 +1,18 @@
 import React,{useEffect,useState} from 'react'
 import {useNavigate} from 'react-router-dom'
 
-function FrontendSignupValidation(Uname,Pword) {
+function FrontendSignupValidation(Uname,Pword,Users) {
   
+  
+
+    const CheckifUserExists=(Username,Users)=>{
+
+      let msg=''
+      
+      const Result=Users.find(user=>user.Username===Username)
+      return Result||Username.length===0?true:false
+      
+    }
 
      const ValidateUser=(Username,Password)=>{
 
@@ -53,9 +63,12 @@ function FrontendSignupValidation(Uname,Pword) {
             
              
         }
-
-       
-  return ValidateUser(Uname,Pword)
+  
+    if(CheckifUserExists(Uname,Users)){
+      return{status:false,feedback:"Username is unavailable"}
+    }
+    
+    return ValidateUser(Uname,Pword)
 }
 
 export default FrontendSignupValidation

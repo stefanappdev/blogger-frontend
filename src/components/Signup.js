@@ -13,12 +13,39 @@ function Signup(){
   const[formdata,setFormData]=useState({Password:'',_id_User:v4(),Username:'',isRegistered:true});
   const [err,seterr]=useState(null);
   const[message,setmessage]=useState(false);
+  const [Users,setUsers]=useState([]);
 
   
 
   const handleChange=(e)=>{
     setFormData({...formdata,[e.target.name]:e.target.value});
   }
+
+  async function  FetchUsers(url){
+    
+    await fetch (url,{method:"GET"})
+    .then(res=>res.json())
+    .then(users=>{
+   
+      setUsers(users);
+     
+      
+    })
+    .catch(err=>{
+      console.log(err.message)
+      })
+    }
+  
+    useEffect(()=>{
+      FetchUsers(`${process.env.REACT_APP_SERVER_URL}/users`)
+      .catch(err=>{
+        console.log(err.message)
+      })
+    },[])
+
+
+
+
 
   const submitdata=()=>{
 
@@ -70,6 +97,9 @@ function Signup(){
         errors=err==='Password is a required field'?
         password_message.textContent=err :"";
 
+        errors=err==="Username is unavailable"?
+        setmessage(err):setmessage("Username is available");
+
       
 
     }
@@ -85,13 +115,13 @@ function Signup(){
    
     //validation goes here
     
-     let validate=FrontendSignupValidation(formdata.Username,formdata.Password);
+     let validate=FrontendSignupValidation(formdata.Username,formdata.Password,Users);
      if(validate.status===true){
        submitdata();
      }
      else{
        Errors(validate)
-       setmessage('Invalid input...try again');
+      
      }
 
 
