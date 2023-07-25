@@ -69,12 +69,19 @@ function Signup(){
               console.log('Something went wrong',err.message)
       }
 
+      let message=document.getElementById('message');
+      message.setAttribute('class','success');
+      setmessage('User logged in successfully');
       setmessage('User registered successfully...redirecting to home page');
+
       setTimeout(()=>{
         navigate('/');
       },5000)
       
     }
+
+
+    
 
 
     const Errors=({feedback})=>{
@@ -83,6 +90,19 @@ function Signup(){
 
         let errors=null
         seterr(feedback)
+
+
+        const username_success=()=>
+    {
+      message.setAttribute('class','success')
+      setmessage("Username is available")
+    }
+
+
+      
+
+        let message=document.getElementById('message');
+       message.setAttribute('class','errors');
 
         errors=err==='Username must be at least 8 characters'?
         username_message.textContent=err:"";
@@ -98,7 +118,8 @@ function Signup(){
         password_message.textContent=err :"";
 
         errors=err==="Username is unavailable"?
-        setmessage(err):setmessage("Username is available");
+
+        setmessage(err):username_success()
 
       
 
@@ -174,7 +195,7 @@ function Signup(){
         <br/>
         <br/>
 
-        <div>{message}</div>
+        <div id='message'>{message}</div>
 
         </div>
 

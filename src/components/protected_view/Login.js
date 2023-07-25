@@ -9,6 +9,7 @@ function Login() {
   const navigate=useNavigate()
   const[formdata,setformdata]=useState({Username:null,Password:null});
   const[Users,setUsers]=useState([]);
+  const [message,setmessage]=useState();
   
   async function  FetchUsers(url){
     
@@ -45,13 +46,20 @@ function Login() {
     const trueactions=()=>{ 
       Auth.setisRegistered(true);
       Auth.setUser(targetUser);
-      console.log('User logged in successfully');
+      let message=document.getElementById('message');
+      message.setAttribute('class','success');
+      setmessage('User logged in successfully');
       Auth.login(targetUser.Username);
-      navigate('/')
+      setTimeout(()=>{
+        navigate('/')
+      },5000)
+      
     }
     const falseactions=()=>{ 
       Auth.setisRegistered(false);
-      console.log('incorrect username or password');
+      let message=document.getElementById('message');
+      message.setAttribute('class','errors');
+      setmessage('incorrect username or password');
     }
     
     targetUser.Password===formdata.Password?
@@ -79,23 +87,6 @@ const Handlechange=(event)=>{
   setformdata({...formdata,[event.target.name]:event.target.value})
 }
 
-const validate=(formdata)=>{
-  if(formdata.Username===null||formdata.User.length===0){
-
-    let username_message=document.getElementById('username_message')
-    username_message.setAttribute('class','error')
-    username_message.textContent='A username is required'
-  }
-
-  else if(formdata.Password===null||formdata.Password.length===0){
-    let password_message=document.getElementById('password_message')
-    password_message.setAttribute('class','error')
-    password_message.textContent='A password is required'
-  }
-
-  
-  
-}
 
 
   return (
@@ -161,6 +152,7 @@ const validate=(formdata)=>{
 
 
           <br/>
+          <div id='message'>{message}</div>
           <br/>
           <br/>
 

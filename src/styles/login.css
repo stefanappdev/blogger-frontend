@@ -12,7 +12,10 @@
 }
 
 
+.success{
+    color: rgb(13, 175, 13);
+}
 
-.error{
+.errors{
     color: red;
 }
